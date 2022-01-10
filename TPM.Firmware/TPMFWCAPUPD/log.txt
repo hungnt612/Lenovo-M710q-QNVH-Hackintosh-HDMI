@@ -1,0 +1,3 @@
+---------- Check Bitlocker          ---------- 
+---------- Bitlocker is Turned OFF              ---------- 
+---------- Continue to update TPM FW            ---------- 

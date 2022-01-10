@@ -1,0 +1,880 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<meta content="Infineon Technologies AG" name="author" />
+	<meta content="Copyright 2017 Infineon Technologies AG. All rights reserved." name="copyright" />
+	<title>Infineon TPM Firmware Update - Readme</title>
+	<style type="text/css">
+		h1 {
+			font-size: x-large;
+			color: #000000;
+			font-weight: bold;
+		}
+
+		h2 {
+			font-size: large;
+			color: #000000;
+			font-weight: bold;
+			margin-top: 12px;
+			margin-bottom: 6px;
+		}
+
+		h3 {
+			font-size: medium;
+			color: #000000;
+			font-weight: bold;
+			margin-top: 9px;
+			margin-bottom: 3px;
+		}
+
+		html {
+			font-family: Arial;
+			font-size: medium;
+			color: black;
+		}
+
+		p {
+			margin-top: 6px;
+			margin-bottom: 6px;
+		}
+
+		hr {
+			margin-top: 1px;
+			margin-bottom: 1px;
+		}
+
+		.CONTENTLINK_H2 {
+			font-weight: bold;
+			margin-top: 6px;
+			margin-bottom: 6px;
+		}
+
+		.CONTENTLINK_H3 {
+			font-weight: bold;
+			margin-left: 20px;
+			margin-top: 6px;
+			margin-bottom: 6px;
+		}
+
+		.CONTENTTOP {
+			font-size: small;
+			color: #213BA7;
+			margin-top: 9px;
+			margin-bottom: 2px;
+		}
+
+		.FOOTER {
+			margin-top: 0px;
+			margin-bottom: 0px;
+		}
+
+		.HIDDEN {
+			color: #FF0000;
+			background-color: #C0C0C0;
+			display: block;
+		}
+
+		a:link {
+			color: #213BA7;
+			text-decoration: none;
+		}
+
+		a:visited {
+			color: #213BA7;
+			text-decoration: none;
+		}
+
+		a:hover {
+			color: #A8112C;
+			text-decoration: none;
+		}
+
+		a[name]:hover {
+			text-decoration: inherit;
+			color: inherit;
+			background: inherit;
+		}
+
+		.COMMANDTEXT {
+			font-family: "Courier New", Courier, monospace;
+			color: #24466D;
+		}
+
+		.COMMANDCOMMENT {
+			font-family: "Courier New", Courier, monospace;
+			color: darkseagreen;
+		}
+
+		.OUTERTABLE {
+			border-collapse: collapse;
+			border-color: #FFFFFF;
+			border-width: 1pt;
+			border-style: solid;
+			font-family: Verdana;
+			font-size: small;
+			padding: 4pt;
+			vertical-align: top;
+			width: 100%;
+		}
+		
+		.highlighting {
+			font-weight: bold;
+			color: red;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+			tr:nth-child(even) td {
+				border-color: #FFF;
+				border-width: 1pt;
+				border-style: solid;
+			}
+
+		tr:nth-child(odd) td {
+			border-color: #F2F2F2;
+			border-width: 1pt;
+			border-style: solid;
+		}
+
+		.INNERTABLE {
+			background-color: #FFFFFF;
+			font-family: Verdana;
+			font-size: small;
+			padding: 4pt;
+			width: 100%;
+		}
+
+		th {
+			background-color: #CCCCCF;
+			text-align: center;
+		}
+
+		td {
+			padding: 8px;
+			border-color: #f2f2f2;
+			border-width: 1pt;
+			border-style: solid;
+		}
+
+		ul {
+			padding-left: 0em;
+			margin-left: 1.5em;
+			list-style-type: disc;
+		}
+
+		li {
+			margin-bottom: 0.3em;
+		}
+	</style>
+</head>
+<body>
+	<h1>
+		<a name="top">
+			Infineon TPM Firmware Update 6.43.243.0 (01.01.0410.00) Readme
+		</a>
+	</h1>
+
+	<p class="CONTENTLINK_H2"><a href="#welcome">Welcome</a></p>
+	<p class="CONTENTLINK_H2"><a href="#requirements">Requirements</a></p>
+	<p class="CONTENTLINK_H3"><a href="#hardware">Hardware</a></p>
+	<p class="CONTENTLINK_H3"><a href="#tpmfirmware">TPM Firmware</a></p>
+	<p class="CONTENTLINK_H3"><a href="#software">Software</a></p>
+	<p class="CONTENTLINK_H3"><a href="#preconditions">Preconditions</a></p>
+	<p class="CONTENTLINK_H2"><a href="#updatetpm">How to update the TPM Firmware</a></p>
+	<p class="CONTENTLINK_H3"><a href="#wizardmode">Wizard Mode</a></p>
+	<p class="CONTENTLINK_H3"><a href="#commandlinemode">Command Line Mode</a></p>
+	<p class="CONTENTLINK_H3"><a href="#steps">Firmware Update Steps</a></p>
+	<p class="CONTENTLINK_H3"><a href="#notes">Important Notes</a></p>
+	<p class="CONTENTLINK_H3"><a href="#helpfulscripts">Helpful scripts</a></p>
+	<p class="CONTENTLINK_H3"><a href="#returnvalues">Error Codes</a></p>
+	<hr />
+
+	<h2><a name="welcome">Welcome</a></h2>
+	<p>
+		Welcome to the Infineon TPM Firmware Update.<br />
+		With the TPM Firmware Update Wizard you can easily check whether your platform is ready for the firmware update. If all preconditions are met, you can update the TPM in just a few steps.<br />
+		If you prefer to perform the TPM Firmware Update without any explicit user interactions, you can use the <a href="#commandlinemode">Command Line Mode</a>.<br />
+		Note that a system restart is needed for the update to take effect. Please save all unsaved work in all user sessions before restarting in order to ensure prevention of data loss.<br />
+		Before you start TPM Firmware Update, please consider the license terms in License.pdf, close all running applications and deactivate or suspend any drive encryption software that uses the TPM.<br />
+	</p>
+	<hr />
+
+	<h2><a name="requirements">Requirements</a></h2>
+	<h3><a name="hardware">Hardware</a></h3>
+	<p>TPM Firmware Update supports Infineon Trusted Platform Module SLB 9670.</p>
+	<h3><a name="tpmfirmware">TPM Firmware</a></h3>
+	<p>This version of TPM Firmware Update supports the update from version(s) 6.40.190.0, 6.41.197.0, 6.41.198.0 and 6.42.204.0 to version 6.43.243.0 of the TPM Firmware.</p>
+	<h3><a name="software">Software</a></h3>
+	<p>
+		Supported operating systems: Microsoft Windows&nbsp;10&nbsp;<sup>&reg;</sup>, Microsoft Windows&nbsp;7&nbsp;<sup>&reg;</sup>&nbsp;SP1.</br>
+		Please install all important updates for your operating system before starting TPM Firmware Update.
+	</p>
+	<h3><a name="preconditions">Preconditions</a></h3>
+	<p>
+		To run the update, you need to have administrative privileges.<br />
+		Also, if the Owner Password is not stored by the operating system you need to know the Owner Password or you need to have a valid Owner Password Backup File. If the Owner Password is not stored by the operating system and you do not have a valid Owner Password Backup File or you do not know the Owner Password, you may use <a href="#cleartpmowner">these commands</a> to clear the TPM. You will be able to take the ownership later on. <span class="highlighting">WARNING: Clearing the TPM resets it to factory defaults. You will lose all created keys and data protected by those keys.</span>
+	</p>
+	<p>
+		The following preconditions must be met in addition:
+	</p>
+
+	<table class="OUTERTABLE">
+		<thead>
+			<tr>
+				<th>Precondition</th>
+				<th>Comment</th>
+				<th>Steps to do if precondition is not met</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					TPM Firmware Update is not prohibited by
+					group policy settings.
+				</td>
+				<td>
+					TPM Firmware Update can be allowed or
+					prohibited by group policy settings.
+				</td>
+				<td>
+					TPM Firmware Update has been explicitly prohibited for your system. To get permission, contact your group policy administrator.
+				</td>
+			</tr>
+			<tr>
+				<td>Power cord is plugged.</td>
+				<td>Only relevant for computers with batteries.</td>
+				<td>Plug the power cord. Do not unplug it before TPM Firmware Update completes.</td>
+			</tr>
+			<tr>
+				<td>If you use BitLocker with any of the following key protectors (stand-alone or in combination with other key protectors):
+					<ul>
+						<li>TPM</li>
+						<li>TPM + PIN</li>
+						<li>TPM + Startup Key</li>
+						<li>TPM + PIN + Startup Key</li>
+					</ul>
+					then BitLocker Drive Encryption must be off or suspended.
+				</td>
+				<td>
+					Only relevant for operating systems with BitLocker Drive Encryption (e.g. Windows&nbsp;10 Pro or Windows&nbsp;7 Ultimate).<br />
+					You can use <a href="#displaybitlockerstatus"> this command line</a> in an elevated command prompt to display current BitLocker status and key protectors.<br />
+					&quot;Off&quot; corresponds to the &quot;fully decrypted&quot; BitLocker state. This is the case, if BitLocker has never been turned on at all, or has explicitly been turned off.<br />
+					&quot;Suspended&quot; (or &quot;disabled&quot;) corresponds to the &quot;encrypted, but protection off&quot; BitLocker state.
+				</td>
+				<td>
+					<p>
+						You can use the &quot;BitLocker Drive Encryption&quot; control panel applet provided by the operating system to turn off or suspend BitLocker. For details, please refer to Microsoft resources on BitLocker.
+					</p>
+					<p>
+						Alternatively you can use <a href="#suspendbitlocker">this command line</a> in an elevated command prompt to suspend the &quot;BitLocker Drive Encryption&quot;, e.g. for drive <em>C</em>.<br />
+						If you want to re-enable the protection, use <a href="#activatebitlocker">this command line</a>.
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td>TPM is enabled and TPM Owner is set.</td>
+				<td>
+					The TPM must be enabled.<br />
+					The TPM Owner must be set before the TPM firmware can be updated.
+				</td>
+				<td>
+					Make sure that your TPM is enabled in the system BIOS. Check the system BIOS documentation for details how to enable the TPM.<br />
+					You can use Microsoft Trusted Platform Module (TPM) Management application to enable the TPM (&quot;Turn TPM on&quot; action) and set the owner. Refer to Microsoft TechNet for details.
+				</td>
+			</tr>
+			<tr>
+				<td>Shut Down, Hibernate and Sleep can be blocked. </td>
+				<td>
+					To avoid an unintentional interruption of the update process, a temporary power plan is created and selected. This power plan blocks Shutdown, Hibernate and Sleep.
+				</td>
+				<td>
+					The power plan could not be created and selected. A possible reason is that this is not allowed by policy settings. To get permission, contact your group policy administrator.
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>To find out whether all preconditions are met on your platform, just start TPM Firmware Update Wizard. The wizard will show you a detailed overview.</p>
+
+	<p class="CONTENTTOP"><a href="#top">Back to top</a></p>
+	<hr />
+
+	<h2><a name="updatetpm">How to update the TPM Firmware</a></h2>
+	<h3><a name="wizardmode">Wizard Mode</a></h3>
+	<p>To run TPM Firmware Update in Wizard Mode (i.e. with graphical user interface), start the executable <em>IFXTPMUpdate_TPM12_v0643<strong>.exe</strong></em> without any parameters. In this case the wizard guides you through the following steps:</p>
+	<ol>
+		<li>Accept the license agreement.</li>
+		<li>Install TPM recovery driver (only if necessary; this may require a restart of your computer).</li>
+		<li>Check platform details.</li>
+		<li>Provide the Owner Password or the Owner Password Backup File if the Owner Password is not managed by the operating system.</li>
+		<li>Perform the update.</li>
+		<li>Restart your computer (please save all unsaved work in all user sessions before restarting in order to ensure prevention of data loss).</li>
+	</ol>
+	<p><em>Note: Wizard Mode always creates a log file in %TEMP% directory.</em></p>
+
+	<h3><a name="commandlinemode">Command Line Mode</a></h3>
+	<p>
+		To run TPM Firmware Update without any user interactions, use the command line tool <em>IFXTPMUpdate_TPM12_v0643<strong>.com</strong></em>. By starting <em>IFXTPMUpdate_TPM12_v0643<strong>.com</strong></em> you implicitly express that you accept the terms of the license agreement in License.pdf.<br />
+	</p>
+	<p>The usage is: <span class="COMMANDTEXT">IFXTPMUpdate_TPM12_v0643.com [action] {[option1] [option2] ...}</span></p>
+
+	<!-- command line -->
+	<table class="OUTERTABLE">
+		<thead>
+			<tr>
+				<th>Action</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="COMMANDTEXT">/?<br />/h<br />/help</td>
+				<td>Shows the command line help</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">/info</td>
+				<td>
+					<p>Logs platform information and <a href="#preconditions">preconditions</a> which are not met.</p>
+					<p>You can specify the following additional options:</p>
+					<table style="table-layout: fixed" class="INNERTABLE">
+						<thead>
+							<tr>
+								<th width="20%">Option</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="COMMANDTEXT">/logfile:&lt;file&gt;</td>
+								<td>
+									<p>Optional parameter to create a log file.<span class="COMMANDTEXT"> &lt;file&gt;</span> must:</p>
+									<ul>
+										<li>either point to an existing file to which you have write access. The tool will append log output to the file.</li>
+										<li>or specify a non-existing file in an existing folder where you are allowed to create a new file. The tool will create the file.</li>
+									</ul>
+									<p>
+										For example the parameter could point to <span class="COMMANDTEXT">C:\Users\User1\Documents\IFXTPMUpdate.log</span>.<br />
+										Note that the file path must be put in quotation marks if it contains spaces.
+									</p>
+									<p>The log file will include platform information and <a href="#preconditions">preconditions</a> which are not met.</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">/update</td>
+				<td>
+					<p>Updates the firmware on the platform.</p>
+					<p>You can specify the following additional options:</p>
+					<table class="INNERTABLE">
+						<thead>
+							<tr>
+								<th width="20%">Option</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<p>
+										<span class="COMMANDTEXT">/pwd:&lt;password&gt;</span><br />
+										or<br />
+										<span class="COMMANDTEXT">/pwdfile:&lt;file&gt;</span>
+									</p>
+								</td>
+								<td>
+									<p>
+										Windows&nbsp;7:<br />
+										Either <span class="COMMANDTEXT">/pwd</span> or <span class="COMMANDTEXT">/pwdfile</span> option is required.
+									</p>
+									<p>
+										Windows&nbsp;10:<br />
+										The option <span class="COMMANDTEXT">/pwd</span> or <span class="COMMANDTEXT">/pwdfile</span> can be omitted if the Owner Password can be retrieved from the operating system. Otherwise the option is mandatory to perform the update.
+									</p>
+									<p>
+										Use the <span class="COMMANDTEXT">/pwd</span> option to specify the Owner Password to be used for the owner authentication during the firmware update process.<br />
+										Use the <span class="COMMANDTEXT">/pwdfile</span> option to specify the Owner Password Backup File to be used for the owner authentication during the firmware update process. <span class="COMMANDTEXT">&lt;file&gt;</span> must be a valid full path of a valid Owner Password Backup File (e.g. <span class="COMMANDTEXT">C:\Users\User1\Documents\Platform1.tpm</span>).
+									</p>
+									<p>
+										Note that the password and the file path must be put in quotation marks if they contain spaces. For passwords containing a quote character, this character must be escaped, i.e. another quote character must be prepended (e.g. <span class="COMMANDTEXT">/pwd:&quot;Password &quot;&quot;1&quot;</span> if the password is <span class="COMMANDTEXT">Password &quot;1</span>).
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td class="COMMANDTEXT">/logfile:&lt;file&gt;</td>
+								<td>
+									<p>Optional parameter to create a log file.<span class="COMMANDTEXT"> &lt;file&gt;</span> must:</p>
+									<ul>
+										<li>either point to an existing file to which you have write access. The tool will append log output to the file.</li>
+										<li>or specify a non-existing file in an existing folder where you are allowed to create a new file. The tool will create the file.</li>
+									</ul>
+									<p>
+										For example the parameter could point to <span class="COMMANDTEXT">C:\Users\User1\Documents\IFXTPMUpdate.log</span>.<br />
+										Note that the file path must be put in quotation marks if it contains spaces.
+									</p>
+									<p>The log file includes platform information and <a href="#preconditions">preconditions</a> which are not met, and the result of the performed update steps.</p>
+								</td>
+							</tr>
+							<tr>
+								<td class="COMMANDTEXT">/restart</td>
+								<td>
+									<p>
+										Optional parameter to enforce the system restart at the end of the update process.<br />
+										Open applications may prevent the restart, but please save all unsaved work in all user sessions before using this parameter in order to ensure prevention of data loss.
+									</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">/recovery-driver:[on|off]</td>
+				<td>
+					<p>
+						This action is provided for the rare scenarios when TPM Firmware Update was interrupted (for example if your computer lost power during an update). In these scenarios the Microsoft TPM Driver is not accessible and a TPM recovery driver is needed to resume the TPM Firmware Update.
+					</p>
+					<p>
+						<span class="COMMANDTEXT">/recovery-driver:on</span> enables recovery mode and temporarily installs a TPM recovery driver. If you completed this action, you can run the <span class="COMMANDTEXT">/update</span> action again. After successful update, the TPM recovery driver is automatically uninstalled. This action is ignored if Microsoft TPM Driver is working properly and there is no pending TPM Firmware Update.
+					</p>
+					<p>
+						<span class="COMMANDTEXT">/recovery-driver:off</span> disables recovery mode and uninstalls the TPM recovery driver. In case a system restart is required after the TPM recovery driver uninstallation, start TPM Firmware Update again after the restart.
+					</p>
+					<p>You can specify the following additional options:</p>
+					<table style="table-layout: fixed" class="INNERTABLE">
+						<thead>
+							<tr>
+								<th width="20%">Option</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="COMMANDTEXT">/logfile:&lt;file&gt;</td>
+								<td>
+									<p>Optional parameter to create a log file.<span class="COMMANDTEXT"> &lt;file&gt;</span> must:</p>
+									<ul>
+										<li>either point to an existing file to which you have write access. The tool will append log output to the file.</li>
+										<li>or specify a non-existing file in an existing folder where you are allowed to create a new file. The tool will create the file.</li>
+									</ul>
+									<p>
+										For example the parameter could point to <span class="COMMANDTEXT">C:\Users\User1\Documents\IFXTPMUpdate.log</span>.<br />
+										Note that the file path must be put in quotation marks if it contains spaces.
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td class="COMMANDTEXT">/restart</td>
+								<td>
+									<p>
+										Optional parameter to enforce the system restart at the end of the update process.<br />
+										Open applications may prevent the restart, but please save all unsaved work in all user sessions before using this parameter in order to ensure prevention of data loss.
+									</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>The following table shows examples how to use the command line:</p>
+	<table class="OUTERTABLE">
+		<thead>
+			<tr>
+				<th>Initial Situation</th>
+				<th>Actions to be done</th>
+				<th width="40%">Command line</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>You are not sure whether your TPM is ready to be updated.</td>
+				<td>Check platform details and preconditions without performing the update.</td>
+				<td>
+					<span class="COMMANDTEXT">IFXTPMUpdate_TPM12_v0643.com /info</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<ul>
+						<li>You already know that your TPM can be updated and all preconditions are met.</li>
+						<li>You have a valid TPM Owner Backup File.</li>
+						<li>You want to check the update result.</li>
+						<li>You want to manually restart your system later.</li>
+					</ul>
+				</td>
+				<td>Perform the update with TPM Owner Backup File. Prevent the system restart. Write a log file.</td>
+				<td>
+					<span class="COMMANDTEXT">IFXTPMUpdate_TPM12_v0643.com /update /pwdfile:&lt;file&gt; /logfile:&lt;file&gt;</span>
+				</td>
+			</tr>
+			<tr>
+				<td>The firmware update failed due to power loss and you want to resume the update process. You want to check the update result.</td>
+				<td>Temporarily install TPM recovery driver. Resume the update. Write a log file.</td>
+				<td>
+					<p>
+						<span class="COMMANDTEXT">
+							IFXTPMUpdate_TPM12_v0643.com /recovery-driver:on /logfile:&lt;file&gt;<br />
+							<br />
+							IFXTPMUpdate_TPM12_v0643.com /update /logfile:&lt;file&gt;
+						</span>
+					</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="CONTENTTOP"><a href="#top">Back to top</a></p>
+	<hr />
+
+	<h3><a name="steps">Firmware Update Steps</a></h3>
+	<p style="width:100%;">The following table explains the steps of the firmware update process:</p>
+	<table class="OUTERTABLE">
+		<thead>
+			<tr>
+				<th>Step</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Set up update process</td>
+				<td>
+					Preparations for the firmware update are made.<br />
+					Especially, precautions are taken to block Shut Down, Hibernate and Sleep functions (if supported by the operating system and allowed by group policy settings).
+				</td>
+			</tr>
+			<tr>
+				<td>Initialize update</td>
+				<td>The firmware parameters are loaded onto the TPM. The Owner Password is verified.</td>
+			</tr>
+			<tr>
+				<td>Perform update</td>
+				<td>The firmware of the TPM is overwritten.</td>
+			</tr>
+			<tr>
+				<td>Verify update</td>
+				<td>The new firmware on the TPM is verified.</td>
+			</tr>
+			<tr>
+				<td>Clean up</td>
+				<td>
+					Temporary data and settings are deleted. Especially, the actions to block Shut Down, Hibernate and Sleep functions are reverted.
+				</td>
+			</tr>
+			<tr>
+				<td>Uninstall TPM recovery driver</td>
+				<td>If the TPM recovery driver has been installed and the update was performed successfully, uninstall the driver.</td>
+			</tr>
+		</tbody>
+	</table>
+	<h3><a name="notes">Important Notes</a></h3>
+	<ul>
+		<li>
+			<strong>BitLocker Drive Encryption</strong><br />
+			If BitLocker Drive Encryption is used on your system, make sure before performing the update, that you know the BitLocker recovery password or you have the recovery key on a USB flash drive.
+		</li>
+		<li>
+			<strong>Interruption of update progress</strong><br />
+			Do not interrupt the update progress. Especially, do not log off, shutdown, switch to sleep or hibernate mode or unplug the power cord while the update is in progress. An interruption could lead to an invalid firmware state (see next note).
+		</li>
+		<li>
+			<strong>Revert to TPM Base Services</strong><br />
+			After an interruption of the update progress, the firmware state may be invalid. In this case TPM Base Services, provided by the operating system to access the TPM, cannot be used any more. To run the firmware update again, the TPM recovery driver must be installed temporarily.<br />
+			If the automatic uninstallation of this software fails, you need to uninstall the TPM recovery driver manually, before you can use functions again that require TPM Base Services (e.g. Trusted Platform Management or the BitLocker Drive Encryption control panel applet). To do so, open device manager, find the &quot;Infineon Trusted Platform Module&quot; entry under &quot;System devices&quot;, and use the function to uninstall the driver. Make sure to check the option to delete the driver package.
+		</li>
+		<li>
+			<strong>Windows&nbsp;10&nbsp;<sup>&reg;</sup> Version&nbsp;1607 and later</strong><br />
+			The owner authorization is no longer stored on the local system. Please refer to the linked <a href="https://docs.microsoft.com/en-us/windows/device-security/tpm/change-the-tpm-owner-password">Microsoft article</a> for details. To update the firmware you need to clear the TPM and take ownership again with modified Windows setting so that owner authorization is stored on the local system.<br /><span class="highlighting">WARNING: Clearing the TPM resets it to factory defaults. You will lose all created keys and data protected by those keys.</span><br />The following steps are needed to update the firmware:
+			<ol>
+				<li>Set registry key 'HKLM\Software\Policies\Microsoft\TPM' [REG_DWORD] 'OSManagedAuthLevel' to 4.</li>
+				<li>Start tpm.msc and click on 'Clear TPM...'.</li>
+				<li>Restart the computer (please save all unsaved work in all user sessions before restarting in order to ensure prevention of data loss).</li>
+				<li>Start tpm.msc and click on 'Prepare the TPM...'.</li>
+				<li>
+					Wait for Windows to re-prepare the TPM (Windows will store owner authorization on local system). Preparation is complete when the Status field in tpm.msc displays "The TPM is ready for use".
+				</li>
+				<li>Run the TPM Firmware Update tool and update the firmware of the TPM.</li>
+				<li>Restart the computer (please save all unsaved work in all user sessions before restarting in order to ensure prevention of data loss).</li>
+				<li>Restore registry key 'HKLM\Software\Policies\Microsoft\TPM' [REG_DWORD] 'OSManagedAuthLevel' to its previous value.</li>
+				<li>Start tpm.msc and click on 'Clear TPM...'.</li>
+				<li>Restart the computer (please save all unsaved work in all user sessions before restarting in order to ensure prevention of data loss).</li>
+				<li>Start tpm.msc and click on 'Prepare the TPM...'.</li>
+				<li>
+					Wait for Windows to re-prepare the TPM (using Windows&nbsp;10 security measures). Preparation is complete when the Status field in tpm.msc displays "The TPM is ready for use".
+				</li>
+			</ol>
+		</li>
+		<li>
+			<strong>Infineon Trusted Platform Module SLB&nbsp;9655 and SLB&nbsp;9660 on Windows&nbsp;7&nbsp;<sup>&reg;</sup></strong><br />
+			The firmware update may take up to 10 minutes. There is a performance problem with tpm.sys driver that causes the firmware update to take longer than necessary. Either be patient or use a newer supported Windows operating system to run the firmware update.
+		</li>
+	</ul>
+
+	<h3><a name="helpfulscripts">Helpful scripts</a></h3>
+	<p>Here you can find helpful commands that may help you bringing your system to a state so that all preconditions for the firmware update can be fulfilled.</p>
+	<table class="OUTERTABLE">
+		<thead>
+			<tr>
+				<th>Usage</th>
+				<th>Description</th>
+				<th>Command(s)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a name="displaybitlockerstatus">Display BitLocker Status</a></td>
+				<td>To display BitLocker drive encryption status and used key protectors for drive C:</td>
+				<td><span class="COMMANDTEXT">manage-bde.exe -status C:</span></td>
+			</tr>
+			<tr>
+				<td><a name="suspendbitlocker">Suspend BitLocker</a></td>
+				<td>To suspend BitLocker drive encryption for drive C:</td>
+				<td><span class="COMMANDTEXT">manage-bde.exe -protectors -disable C:</span></td>
+			</tr>
+			<tr>
+				<td><a name="activatebitlocker">(Re-)Activate BitLocker</a></td>
+				<td>To (re-)activate BitLocker drive encryption for drive C: after the firmware update was performed</td>
+				<td><span class="COMMANDTEXT">manage-bde.exe -protectors -enable C:</span></td>
+			</tr>
+			<tr>
+				<td><a name="cleartpmowner">Clear the TPM owner<br/><span class="highlighting">WARNING: Clearing the TPM resets it to factory defaults. You will lose all created keys and data protected by those keys.<span class="highlighting"></a></td>
+				<td>
+					<ul>
+						<li>To clear the TPM owner in case you do not know the Owner Password and/or it is not available through the operating system</li>
+						<li>Please note: the last command will restart your computer, which is necessary to clear the TPM owner</li>
+					</ul>
+				</td>
+				<td>
+					<ol>
+						<li><span class="COMMANDTEXT">reg add HKLM\SOFTWARE\Policies\Microsoft\TPM /f /v OSManagedAuthLevel /t REG_DWORD /d 4</span></li>
+						<li><span class="COMMANDTEXT">WMIC /namespace:\\root\cimv2\Security\MicrosoftTpm Path Win32_Tpm Where __RELPATH="Win32_Tpm=@" Call SetPhysicalPresenceRequest 14</span></li>
+						<li><span class="COMMANDTEXT">shutdown -r -t 15</span></li>
+					</ol>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="CONTENTTOP"><a href="#top">Back to top</a></p>
+	<hr />
+
+	<h3><a name="returnvalues">Error Codes</a></h3>
+	<p>
+		The following table lists errors specific to TPM Firmware Update. In Wizard Mode, errors are displayed by the graphical user interface. In Command Line Mode, errors are logged to the console and in the log file if a log file was configured. The exit code of IFXTPMUpdate_TPM12_v0643.com is set accordingly.<br />
+		Note that not all possible errors are listed here, e.g. no Windows system error codes. Details on Windows system error codes are available in the MSDN.
+	</p>
+	<table class="OUTERTABLE">
+		<thead>
+			<tr>
+				<th colspan="2">Error</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="COMMANDTEXT">0xE028000A</td>
+				<td>TPM command with a bad ordinal was called.</td>
+				<td>
+					An unknown or blocked TPM command was called. Make sure that the <span class="COMMANDTEXT">TPM_FieldUpdate</span> command is not blocked on your platform.<br />
+					Make sure that the default settings in the Command Management of Microsoft Trusted Platform Module (TPM) Management have not been changed.
+				</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0001</td>
+				<td>An internal error occurred.</td>
+				<td>Contact your system administrator.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0002</td>
+				<td>A Trusted Platform Module (TPM) error occurred.</td>
+				<td>Contact your system administrator.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0003</td>
+				<td>A Trusted Software Stack (TSS) error occurred.</td>
+				<td>Consider to repair, reinstall or update the software which accesses the TPM, e.g. Infineon TPM Driver or TPM Base Services as provided by Windows&nbsp;7 or higher.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0004</td>
+				<td>You do not have permission to perform this operation.</td>
+				<td>Make sure that you have administrative rights.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0005</td>
+				<td>Another instance of TPM Firmware Update is already running.</td>
+				<td>Do not start TPM Firmware Update while the same program is already running.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0007</td>
+				<td>A wrong command line was specified.</td>
+				<td>Make sure to specify correct parameters (see <a href="#commandlinemode">Command Line Mode</a>).</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0008</td>
+				<td>No Trusted Platform Module was found.</td>
+				<td>Check whether your system has a TPM (see <a href="#requirements">Requirements</a>). Make sure that the system BIOS settings do not hide the TPM.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0009</td>
+				<td>No connection to the Trusted Platform Module can be established.</td>
+				<td>Consider to repair, reinstall or update the software which accesses the TPM, e.g. Infineon TPM Driver or TPM Base Services as provided by Windows&nbsp;7 or higher.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A000A</td>
+				<td>TPM device driver or TPM Base Services are missing, not functional, or do not meet TPM Firmware Update requirements.</td>
+				<td>
+					TPM Firmware Update requires either TPM Base Services with a suitable Microsoft TPM Driver or an Infineon TPM Driver. No suitable software could be found on your system.<br />
+					To install a compatible driver, specify the <span class="COMMANDTEXT">/recovery-driver:on</span> parameter in Command Line Mode, or start TPM Update Wizard. See <a href="#commandlinemode">Command Line Mode</a> and <a href="#notes">Important Notes</a>.
+				</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A000B</td>
+				<td>TPM recovery driver could not be installed or installation requires a restart.</td>
+				<td>Install the TPM recovery driver manually if error is still reported after a restart.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A000C</td>
+				<td>TPM recovery driver could not be uninstalled.</td>
+				<td>Uninstall the TPM recovery driver manually (see <a href="#notes">Important Notes</a>).</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A000D</td>
+				<td>Trusted Platform Module vendor is not supported.</td>
+				<td>Check whether your system has a Trusted Platform Module as specified in the <a href="#requirements">Requirements</a>.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A000E</td>
+				<td>TPM Firmware Update does not include a matching firmware for your Trusted Platform Module.</td>
+				<td>Contact your vendor to find out whether there is a suitable TPM Firmware Update. Include the TPM and firmware detail info in your query, as shown on the &quot;Check platform details&quot; wizard page.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A000F</td>
+				<td>A wrong Owner Password was specified.</td>
+				<td>Make sure to specify the correct Owner Password. In Wizard Mode, type the correct password on &quot;Provide the Owner Password&quot; page. In Command Line Mode, specify the correct password using the <span class="COMMANDTEXT">/pwd:&lt;password&gt; </span>parameter.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0010</td>
+				<td>The content of the specified Owner Password Backup File does not match the current Owner Password.</td>
+				<td>
+					The specified file could be found and identified as a valid Owner Password Backup File. But the file content does not match the current Owner Password.<br />
+					Make sure to specify the correct Owner Password Backup File. In Wizard Mode, specify the correct file on &quot;Provide the Owner Password&quot; page. In Command Line Mode, specify the correct file using the <span class="COMMANDTEXT">/pwdfile:&lt;file&gt; </span>parameter.
+				</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0011</td>
+				<td>The specified Owner Password Backup File does not exist, cannot be opened, or is not a valid Owner Password Backup File.</td>
+				<td>Make sure to specify the correct file path of an existing Owner Password Backup File. In Wizard Mode, specify the correct file on &quot;Provide the Owner Password&quot; page. In Command Line Mode, specify the correct file using the <span class="COMMANDTEXT">/pwdfile:&lt;file&gt; </span>parameter.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0012</td>
+				<td>An invalid log file path was specified.</td>
+				<td>
+					The specified file path is either invalid, or the file cannot be created or accessed due to missing permissions.<br />
+					In Command Line Mode, use the <span class="COMMANDTEXT">/logfile:&lt;file&gt; </span> parameter to specify a valid file path of a file in a folder where you have permission to create or access a file.
+				</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0013</td>
+				<td>Multiple TPM Firmware Update preconditions are not met.</td>
+				<td>Start TPM Firmware Update in Wizard Mode. The &quot;Check platform details&quot; wizard page will display all preconditions which are not met (see <a href="#preconditions">Preconditions</a>).</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0014</td>
+				<td>TPM Owner is not set.</td>
+				<td>See <a href="#preconditions">Preconditions</a>, &quot;TPM is enabled and TPM Owner is set&quot;.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0015</td>
+				<td>TPM is not enabled.</td>
+				<td>See <a href="#preconditions">Preconditions</a>, &quot;TPM is enabled and TPM Owner is set&quot;.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0016</td>
+				<td>System is running on battery.</td>
+				<td>See <a href="#preconditions">Preconditions</a>, &quot;Power cord is plugged&quot;.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0017</td>
+				<td>Update not allowed by policy settings.</td>
+				<td>See <a href="#preconditions">Preconditions</a>, &quot;TPM Firmware Update is not prohibited by group policy settings&quot;.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0018</td>
+				<td>Shutdown, Hibernate and Sleep cannot be blocked, or blocking of Shutdown, Hibernate and Sleep cannot be reverted.</td>
+				<td>See <a href="#preconditions">Preconditions</a>, &quot;Shut Down, Hibernate and Sleep can be blocked&quot;.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0019</td>
+				<td>BitLocker Drive Encryption blocks update.</td>
+				<td>See <a href="#preconditions">Preconditions</a>, &quot;BitLocker Drive Encryption is off or suspended&quot;.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A001A</td>
+				<td>The Owner Password cannot be retrieved from the operating system.</td>
+				<td>The Owner Password is not stored by the operating system (Windows&nbsp;10). In Command Line Mode either use parameter <span class="COMMANDTEXT">/pwdfile:&lt;file&gt; </span> or <span class="COMMANDTEXT">/pwd:&lt;password&gt; </span> to specify the Owner Password.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A001B</td>
+				<td>Your TPM already runs the firmware included with this version of TPM Firmware Update or newer.</td>
+				<td>Contact your vendor to find out whether there is a suitable TPM Firmware Update. Include the TPM and firmware detail info in your query, as shown on the &quot;Check platform details&quot; wizard page.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A001C</td>
+				<td>The maximum allowed number of firmware updates has been reached.</td>
+				<td>No further TPM firmware update possible because the maximum allowed number of firmware updates for your system has been reached. Contact your system administrator.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A001E</td>
+				<td>Administrative rights weren't given during device driver installation.</td>
+				<td>Start the program as an administrator.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A001F</td>
+				<td>Administrative rights weren't given during device driver uninstallation.</td>
+				<td>Start the program as an administrator.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0020</td>
+				<td>A system restart is pending.</td>
+				<td>To finalize the firmware update or the TPM recovery driver uninstallation a system restart is required.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0021</td>
+				<td>The TPM recovery driver status cannot be obtained.</td>
+				<td>Contact your system administrator.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0023</td>
+				<td>The TPM does not have an owner.</td>
+				<td>Take ownership of the TPM before updating the TPM firmware.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0024</td>
+				<td>The firmware update is not applicable to the SLB model of this TPM.</td>
+				<td>Contact your vendor to find out whether there is a suitable TPM Firmware Update. Include the TPM and firmware detail info in your query, as shown on the &quot;Check platform details&quot; wizard page.</td>
+			</tr>
+			<tr>
+				<td class="COMMANDTEXT">0xE02A0025</td>
+				<td>TPM is in Dictionary Attack mode</td>
+				<td>
+					Due to multiple failed attempts to provide a valid owner password, the TPM is locked to prevent dictionary attack.<br />
+					The TPM will be automatically unlocked after a certain amount of time. The exact time depends on how many failed attempts have been registered.<br />
+					<em>Note: Depending on your TPM configuration, the TPM may not only be locked but also temporarily disabled. In that case a restart is required in addition to elapsed lockout time.</em>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="CONTENTTOP"><a href="#top">Back to top</a></p>
+	<hr />
+
+	<p class="FOOTER">Copyright &copy; 2017 <a href="http://www.infineon.com/tpm" target="_blank" title="http://www.infineon.com/tpm">Infineon Technologies AG</a>. All rights reserved.<p>
+	<p class="FOOTER">Microsoft and Windows are registered trademarks of Microsoft Corporation in the United States and/or other countries.</p>
+</body>
+</html>
